@@ -34,3 +34,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+#Idea
+.idea
+
+#macOS
+.DS_Store
