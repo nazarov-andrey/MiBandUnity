@@ -14,14 +14,19 @@ namespace MiBand
                 miBand = new MiBandStub ();
         }
 
-        public void ListenHeartRate (string mac, IHeartrateListener heartrateListener)
+        public void Connect (string mac, IMiBandManagerStateHandler handler)
         {
-            miBand.ListenHeartRate (mac, heartrateListener);
+            miBand.Connect (mac, handler);
         }
 
-        public void StartHeartrateScan ()
+        public void StartHeartrateScan (IHeartRateScanStartHandler handler)
         {
-            miBand.StartHeartrateScan ();
+            miBand.StartHeartrateScan (handler);
+        }
+
+        public void SetHeartRateListener (IHeartrateListener heartrateListener)
+        {
+            miBand.SetHeartRateListener (heartrateListener);
         }
     }
 }

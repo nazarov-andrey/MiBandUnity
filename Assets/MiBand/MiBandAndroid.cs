@@ -4,6 +4,48 @@ namespace MiBand
 {
     public class MiBandAndroid : IMiBand
     {
+        class MiBandManagerStateHandler : AndroidJavaProxy
+        {
+            private IMiBandManagerStateHandler handler;
+
+            public MiBandManagerStateHandler (IMiBandManagerStateHandler handler) : base (
+                "com.khmelenko.lab.miband.IMiBandManagerStateHandler")
+            {
+                this.handler = handler;
+            }
+
+            public void OnConnected ()
+            {
+                handler.OnConnected ();
+            }
+
+            public void OnConnectionFailed ()
+            {
+                handler.OnConnectionFailed ();
+            }
+        }
+
+        class HeartRateScanStartHandler : AndroidJavaProxy
+        {
+            private IHeartRateScanStartHandler handler;
+
+            public HeartRateScanStartHandler (IHeartRateScanStartHandler handler)
+                : base ("com.khmelenko.lab.miband.IHeartRateScanStartHandler")
+            {
+                this.handler = handler;
+            }
+
+            public void OnSuccess ()
+            {
+                handler.OnSuccess ();
+            }
+
+            public void OnFailed ()
+            {
+                handler.OnFailed ();
+            }
+        }
+
         class HeartrateListener : AndroidJavaProxy
         {
             private IHeartrateListener heartrateListener;
@@ -36,14 +78,19 @@ namespace MiBand
             return manager;
         }
 
-        public void ListenHeartRate (string mac, IHeartrateListener heartrateListener)
+        public void Connect (string mac, IMiBandManagerStateHandler handler)
         {
-            GetManager ().Call ("ListenHeartRate", mac, new HeartrateListener (heartrateListener));
+            GetManager ().Call ("Connect", mac, new MiBandManagerStateHandler (handler));
         }
 
-        public void StartHeartrateScan ()
+        public void StartHeartrateScan (IHeartRateScanStartHandler handler)
         {
-            GetManager ().Call ("StartHeartRateScan");
+            GetManager ().Call ("StartHeartRateScan", new HeartRateScanStartHandler (handler));
+        }
+
+        public void SetHeartRateListener (IHeartrateListener heartrateListener)
+        {
+            GetManager ().Call ("SetHeartRateListener", new HeartrateListener (heartrateListener));
         }
     }
 }

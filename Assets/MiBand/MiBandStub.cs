@@ -2,12 +2,19 @@
 {
     public class MiBandStub : IMiBand
     {
-        public void ListenHeartRate (string mac, IHeartrateListener heartrateListener)
+        public void Connect (string mac, IMiBandManagerStateHandler handler)
         {
+            
         }
 
-        public void StartHeartrateScan ()
+        public void StartHeartrateScan (IHeartRateScanStartHandler handler)
         {
+            
+        }
+
+        public void SetHeartRateListener (IHeartrateListener heartrateListener)
+        {
+            
         }
     }
 }

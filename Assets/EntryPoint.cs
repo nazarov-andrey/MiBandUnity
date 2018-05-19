@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EntryPoint : MonoBehaviour, IHeartrateListener
+public class EntryPoint : MonoBehaviour, IHeartrateListener, IMiBandManagerStateHandler
 {
     [SerializeField]
     private Text text;
@@ -11,7 +11,7 @@ public class EntryPoint : MonoBehaviour, IHeartrateListener
 
     private void Start ()
     {
-        miBand.ListenHeartRate ("C9:96:8C:EF:25:FA", this);
+        miBand.Connect ("C9:96:8C:EF:25:FA", this);
     }
 
     public void OnHeartRate (int heartRate)
@@ -23,6 +23,15 @@ public class EntryPoint : MonoBehaviour, IHeartrateListener
     public void ScanHeartRate ()
     {
         Debug.Log ("ScanHeartRate " + miBand);
-        miBand.StartHeartrateScan ();
+        miBand.StartHeartrateScan (null);
+    }
+
+    public void OnConnected ()
+    {
+        miBand.SetHeartRateListener (this);
+    }
+
+    public void OnConnectionFailed ()
+    {
     }
 }
