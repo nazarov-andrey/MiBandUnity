@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace MiBand
 {
@@ -19,14 +20,29 @@ namespace MiBand
             miBand.Connect (mac, handler);
         }
 
-        public void StartHeartrateScan (IHeartRateScanStartHandler handler)
+        public void StartHeartrateScan (Action success, Action failed)
         {
-            miBand.StartHeartrateScan (handler);
+            miBand.StartHeartrateScan (success, failed);
+        }
+
+        public void ContinueHeartRateScane ()
+        {
+            miBand.ContinueHeartRateScane ();
+        }
+
+        public void StopHeartrateScan (Action success, Action failed)
+        {
+            miBand.StopHeartrateScan (success, failed);
         }
 
         public void SetHeartRateListener (IHeartrateListener heartrateListener)
         {
             miBand.SetHeartRateListener (heartrateListener);
+        }
+
+        public void RequestHeartRateState ()
+        {
+            miBand.RequestHeartRateState ();
         }
     }
 }

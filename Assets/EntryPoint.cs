@@ -23,7 +23,7 @@ public class EntryPoint : MonoBehaviour, IHeartrateListener, IMiBandManagerState
     public void ScanHeartRate ()
     {
         Debug.Log ("ScanHeartRate " + miBand);
-        miBand.StartHeartrateScan (null);
+//        miBand.StartHeartrateScan (null);
     }
 
     public void OnConnected ()

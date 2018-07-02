@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace MiBand
 {
@@ -22,27 +23,6 @@ namespace MiBand
             public void OnConnectionFailed ()
             {
                 handler.OnConnectionFailed ();
-            }
-        }
-
-        class HeartRateScanStartHandler : AndroidJavaProxy
-        {
-            private IHeartRateScanStartHandler handler;
-
-            public HeartRateScanStartHandler (IHeartRateScanStartHandler handler)
-                : base ("com.khmelenko.lab.miband.IHeartRateScanStartHandler")
-            {
-                this.handler = handler;
-            }
-
-            public void OnSuccess ()
-            {
-                handler.OnSuccess ();
-            }
-
-            public void OnFailed ()
-            {
-                handler.OnFailed ();
             }
         }
 
@@ -83,14 +63,32 @@ namespace MiBand
             GetManager ().Call ("Connect", mac, new MiBandManagerStateHandler (handler));
         }
 
-        public void StartHeartrateScan (IHeartRateScanStartHandler handler)
+        public void StartHeartrateScan (Action success, Action failed)
         {
-            GetManager ().Call ("StartHeartRateScan", new HeartRateScanStartHandler (handler));
+            GetManager ()
+                .Call ("StartHeartRateScan", new AndroidJavaRunnable (success), new AndroidJavaRunnable (failed));
+        }
+
+        public void ContinueHeartRateScane ()
+        {
+            GetManager ()
+                .Call ("ContinueHeartRateScan");
+        }
+
+        public void StopHeartrateScan (Action success, Action failed)
+        {
+            GetManager ()
+                .Call ("StopHeartRateScan", new AndroidJavaRunnable (success), new AndroidJavaRunnable (failed));
         }
 
         public void SetHeartRateListener (IHeartrateListener heartrateListener)
         {
             GetManager ().Call ("SetHeartRateListener", new HeartrateListener (heartrateListener));
+        }
+
+        public void RequestHeartRateState ()
+        {
+            GetManager ().Call ("RequestHeartRateState");
         }
     }
 }
